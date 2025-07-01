@@ -1,19 +1,36 @@
-import express, { Request, Response } from "express"
+import express from "express";
+import { connectDB } from "./db/mongo";
 import dotenv from "dotenv"
-import { connectDB } from "./db/mongo"
-import rootRouter from "./routes"
+import rootRouter from "./routes";
+import { errorHandler } from "./middlewares/errorHandler";
+import cors from "cors"
+
 
 dotenv.config()
-const app = express()
-app.use(express.json()) 
-// to give express the ability to handle jsons
+
+const app  = express()
+
+
+
+const corsOption = {
+    origin:process.env.CLIENT_ORIGIN,
+    credential :true,
+    methods : "GET,PUT,POST,DELETE",
+    allowHeaders :["Content-Type","Autherization"]
+}
+
 
 const PORT = process.env.PORT
 
-app.use("/api", rootRouter)
+app.use(cors(corsOption))
+app.use(express.json())
+app.use("/api",rootRouter)
+app.use(errorHandler)
 
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`)
-  })
+
+connectDB().then(()=>{
+    app.listen(PORT,()=>{
+        console.log(`server runnig on http://localhost:${PORT}`)
+    })
 })
+
