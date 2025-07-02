@@ -15,6 +15,7 @@ export const saveCustomer = async ( req:Request,res:Response,next:NextFunction)=
        res.status(200).json(customer)
 
     }catch(error:any){
+        console.error("❌ Error saving customer:", error); // ✅ Print error to terminal
         next(error)
     }
 

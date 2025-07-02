@@ -22,7 +22,6 @@ export const authenticateToken = (req:Request,res:Response,next:NextFunction) =>
             process.env.ACCESS_SCRETE_TOKEN!,
 
             (error,decoded) => {
-
                if(error){
                        
                 if(error instanceof TokenExpiredError){
@@ -41,10 +40,7 @@ export const authenticateToken = (req:Request,res:Response,next:NextFunction) =>
                
                next()
 
-         } 
-
-        )
-
+         })
     }catch(error:any){
           next(error)
     }
